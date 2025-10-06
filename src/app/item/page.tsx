@@ -1,3 +1,10 @@
+"use client";
 export default function ItemPage() {
-  return <h1>아이템 페이지</h1>;
+  return (
+    <div className="min-h-screen bg-white">
+      <main className="px-[15px] pt-[17px]">
+        <section className=""></section>
+      </main>
+    </div>
+  );
 }
