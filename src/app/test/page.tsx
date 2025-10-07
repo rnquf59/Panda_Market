@@ -1,5 +1,6 @@
 import ItemNavbar from "@/components/layout/ItemNavbar";
 import ProductCard from "../item/components/ProductCard";
+import ProductList from "../item/components/ProductList";
 
 export default function TestPage() {
   const mockProducts = [
@@ -42,6 +43,10 @@ export default function TestPage() {
             <ProductCard product={mockProducts[0]} />
           </div>
         </section>
+        <div className="mb-12">
+          <h3 className="text-md font-medium mb-4">ProductList 정상상태</h3>
+          <ProductList products={mockProducts} isLoading={false} error={null} />
+        </div>
       </main>
     </div>
   );
