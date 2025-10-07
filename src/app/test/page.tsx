@@ -1,9 +1,7 @@
-"use client";
-
 import ItemNavbar from "@/components/layout/ItemNavbar";
-import ProductCard from "./components/ProductCard";
+import ProductCard from "../item/components/ProductCard";
 
-export default function ItemPage() {
+export default function TestPage() {
   const mockProducts = [
     {
       id: 1,
@@ -34,7 +32,6 @@ export default function ItemPage() {
       image: "/image/img_empty.png",
     },
   ];
-
   return (
     <div className="min-h-screen bg-white">
       <ItemNavbar />
