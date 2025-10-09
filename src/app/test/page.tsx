@@ -1,8 +1,14 @@
+"use client";
+
 import ItemNavbar from "@/components/layout/ItemNavbar";
 import ProductCard from "../item/components/ProductCard";
 import ProductList from "../item/components/ProductList";
+import Pagination from "../item/components/Pagination";
+import { useState } from "react";
 
 export default function TestPage() {
+  const [currentPage, setCurrentPage] = useState(1);
+
   const mockProducts = [
     {
       id: 1,
@@ -46,6 +52,15 @@ export default function TestPage() {
         <div className="mb-12">
           <h3 className="text-md font-medium mb-4">ProductList 정상상태</h3>
           <ProductList products={mockProducts} isLoading={false} error={null} />
+
+          <div className="mt-8">
+            <h3 className="text-md font-medium mb-4">페이지네이션 테스트</h3>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={10}
+              onPageChange={setCurrentPage}
+            />
+          </div>
         </div>
       </main>
     </div>
