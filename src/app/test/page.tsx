@@ -4,10 +4,13 @@ import ItemNavbar from "@/components/layout/ItemNavbar";
 import ProductCard from "../item/components/ProductCard";
 import ProductList from "../item/components/ProductList";
 import Pagination from "../item/components/Pagination";
+import SearchAndFilter from "../item/components/SearchAndFilter";
 import { useState } from "react";
 
 export default function TestPage() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState<"recent" | "favorite">("recent");
 
   const mockProducts = [
     {
@@ -43,6 +46,27 @@ export default function TestPage() {
     <div className="min-h-screen bg-white">
       <ItemNavbar />
       <main className="px-[15px] pt-[17px] pb-[35px] md:px-6 xl:px-0 xl:max-w-[1200px]">
+        {/* SearchAndFilter 테스트 섹션 */}
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-gray-900 mb-4">
+            SearchAndFilter 테스트
+          </h2>
+          <SearchAndFilter
+            searchQuery={searchQuery}
+            sortBy={sortBy}
+            onSearchChange={setSearchQuery}
+            onSortChange={setSortBy}
+          />
+          <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+            <p className="text-sm text-gray-600">
+              <strong>검색어:</strong> {searchQuery || "없음"}
+              <br />
+              <strong>정렬:</strong>{" "}
+              {sortBy === "recent" ? "최신순" : "좋아요순"}
+            </p>
+          </div>
+        </div>
+
         <section className="mb-6 md:mb-10">
           <h2 className="text-xl font-bold text-gray-900 mb-4">베스트 상품</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap6">
