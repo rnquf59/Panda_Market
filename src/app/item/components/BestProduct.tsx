@@ -23,7 +23,7 @@ export default function BestProduct({
           width={168}
           height={168}
           className={`w-full object-cover rounded-[19.46px] ${
-            image === "/image/img_empty.png"
+            image === "/items/img_empty.png"
               ? "bg-gray-50 aspect-square"
               : "aspect-square"
           }`}

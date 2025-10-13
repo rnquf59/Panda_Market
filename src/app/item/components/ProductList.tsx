@@ -1,4 +1,4 @@
-import { ProductCard as ProductCardType } from "@/app/types/product";
+import { ProductCard as ProductCardType } from "@/types/product";
 import ProductCard from "./ProductCard";
 
 interface ProductListProps {

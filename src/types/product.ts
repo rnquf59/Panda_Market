@@ -3,6 +3,13 @@ export interface Product {
   name: string;
   description: string;
   price: number;
+  images: string[];
+  favoriteCount: number;
+  ownerId: number;
+  ownerNickname: string;
+  iamges: string[];
+  tags: string[];
+  createdAt: string;
 }
 
 export interface ProductCard {

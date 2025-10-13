@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ProductListResponse, SearchParams } from "../types/product";
+import { ProductListResponse, SearchParams } from "../../types/product";
 import { apiClient } from "./client";
 
 export const productAPI = {

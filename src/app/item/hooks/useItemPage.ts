@@ -1,6 +1,7 @@
 "use client";
 
-import { ProductCard } from "@/app/types/product";
+import { productAPI } from "@/app/api/products";
+import { ProductCard } from "@/types/product";
 import { useStore } from "@/stores/useStore";
 import { useEffect, useState } from "react";
 
@@ -52,5 +53,17 @@ export function useItemPage() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+
+  // 베스트 상품 로드
+  useEffect(() => {
+    const loadBestProducts = async () =>{
+      try{
+        const bestCount = getBestProductCount();
+        const response = await productAPI.getBestProducts(bestCount);
+        setBestProducts(response.list.map(transform))
+      }
+    }
+  })
   return {};
 }

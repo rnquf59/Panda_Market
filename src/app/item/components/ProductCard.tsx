@@ -1,4 +1,4 @@
-import { ProductCard as ProductCardType } from "@/app/types/product";
+import { ProductCard as ProductCardType } from "@/types/product";
 import Image from "next/image";
 
 interface ProductCardProps {
@@ -16,7 +16,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           width={168}
           height={168}
           className={`w-full object-cover rounded-[19.46px] ${
-            product.image === "/image/img_empty.png"
+            product.image === "/items/img_empty.png"
               ? "bg-gray-50 aspect-square"
               : "aspect-square"
           }`}
