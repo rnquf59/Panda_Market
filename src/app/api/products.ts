@@ -19,7 +19,7 @@ export const productAPI = {
     }
   },
 
-  gerProducts: async (params?: SearchParams): Promise<ProductListResponse> => {
+  getProducts: async (params?: SearchParams): Promise<ProductListResponse> => {
     try {
       const queryParams = new URLSearchParams();
       if (params?.page) queryParams.append("page", params.page.toString());
@@ -41,7 +41,7 @@ export const productAPI = {
     }
   },
 
-  serchProducts: async (
+  searchProducts: async (
     keyword: string,
     params?: SearchParams
   ): Promise<ProductListResponse> => {

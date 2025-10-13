@@ -4,15 +4,17 @@ import { productAPI } from "@/app/api/products";
 import { ProductCard } from "@/types/product";
 import { useStore } from "@/stores/useStore";
 import { useEffect, useState } from "react";
+import { transformProduct } from "@/utils/productUtils";
 
 type ScreenSize = "mobile" | "tablet" | "pc";
 
 export function useItemPage() {
   const [screenSize, setScreenSize] = useState<ScreenSize>("mobile");
-  const [currentPge, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [bestProducts, setBestProducts] = useState<ProductCard[]>([]);
   const [products, setProducts] = useState<ProductCard[]>([]);
   const [totalPages, setTotalpages] = useState(0);
+  const [error, setError] = useState<string | null>(null);
 
   //   zustand 스토어 상태
   const { searchQuery, sortBy, setSearchQuery, setSortBy, setLoading, ui } =
@@ -54,16 +56,82 @@ export function useItemPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-
   // 베스트 상품 로드
   useEffect(() => {
-    const loadBestProducts = async () =>{
-      try{
+    const loadBestProducts = async () => {
+      try {
         const bestCount = getBestProductCount();
         const response = await productAPI.getBestProducts(bestCount);
-        setBestProducts(response.list.map(transform))
+        setBestProducts(response.list.map(transformProduct));
+      } catch (err) {
+        console.error("베스트 상품 로드 실패:", err);
+        setBestProducts([]);
       }
-    }
-  })
-  return {};
+    };
+    loadBestProducts();
+  }, [screenSize]);
+
+  // 상품 목록 로드
+  useEffect(() => {
+    const loadProducts = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        let response;
+
+        const pageSize = getPageSize();
+
+        if (searchQuery.trim()) {
+          response = await productAPI.searchProducts(searchQuery, {
+            page: currentPage,
+            pageSize,
+            orderBy: sortBy,
+          });
+        } else {
+          response = await productAPI.getProducts({
+            page: currentPage,
+            pageSize,
+            orderBy: sortBy,
+          });
+        }
+
+        const transformProducts = response.list.map(transformProduct);
+        setProducts(transformProducts);
+        setTotalpages(Math.ceil(response.totalCount / pageSize));
+      } catch (err) {
+        console.error("상품 목록 로드 실패:", err);
+        setError("상품을 불러오는데 실패했습니다.");
+        setProducts([]);
+        setTotalpages(0);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadProducts();
+  }, [currentPage, searchQuery, sortBy, setLoading]);
+
+  const handleSortChange = (sort: "recent" | "favorite") => {
+    setSortBy(sort);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  return {
+    currentPage,
+    bestProducts,
+    products,
+    totalPages,
+    error,
+    searchQuery,
+    sortBy,
+    isLoading: ui.isLoading,
+
+    setSearchQuery,
+    handleSortChange,
+    handlePageChange,
+  };
 }
