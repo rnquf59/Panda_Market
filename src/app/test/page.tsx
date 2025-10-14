@@ -1,6 +1,6 @@
 "use client";
 
-import ItemNavbar from "@/components/layout/ItemNavbar";
+import ItemNavbar from "@/components/layout/Navbar";
 import ProductCard from "../item/components/ProductCard";
 import ProductList from "../item/components/ProductList";
 import Pagination from "../item/components/Pagination";
