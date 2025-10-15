@@ -13,7 +13,7 @@ export function useItemPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [bestProducts, setBestProducts] = useState<ProductCard[]>([]);
   const [products, setProducts] = useState<ProductCard[]>([]);
-  const [totalPages, setTotalpages] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
   //   zustand 스토어 상태
@@ -96,20 +96,20 @@ export function useItemPage() {
           });
         }
 
-        const transformProducts = response.list.map(transformProduct);
-        setProducts(transformProducts);
-        setTotalpages(Math.ceil(response.totalCount / pageSize));
+        const transformedProducts = response.list.map(transformProduct);
+        setProducts(transformedProducts);
+        setTotalPages(Math.ceil(response.totalCount / pageSize));
       } catch (err) {
         console.error("상품 목록 로드 실패:", err);
         setError("상품을 불러오는데 실패했습니다.");
         setProducts([]);
-        setTotalpages(0);
+        setTotalPages(0);
       } finally {
         setLoading(false);
       }
     };
     loadProducts();
-  }, [currentPage, searchQuery, sortBy, setLoading]);
+  }, [currentPage, searchQuery, sortBy, screenSize, setLoading]);
 
   const handleSortChange = (sort: "recent" | "favorite") => {
     setSortBy(sort);

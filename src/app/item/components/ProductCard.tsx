@@ -15,6 +15,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           alt={product.title || "상품 이미지"}
           width={168}
           height={168}
+          unoptimized={product.image.startsWith("http")}
           className={`w-full object-cover rounded-[19.46px] ${
             product.image === "/items/img_empty.png"
               ? "bg-gray-50 aspect-square"

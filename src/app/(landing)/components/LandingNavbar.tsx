@@ -8,7 +8,7 @@ export default function LandingNavbar() {
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/">
           <Image
-            src="/image/panda_logo.png"
+            src="/logo/panda_logo.png"
             alt="판다마켓 로고"
             width={153}
             height={51}
