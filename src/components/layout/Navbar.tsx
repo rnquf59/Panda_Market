@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function ItemNavbar() {
+export default function Navbar() {
   return (
     <nav className="bg-white border-b border-[#DFDFDF]">
       <div className="px-4 py-[15px]">

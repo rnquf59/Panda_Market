@@ -2,7 +2,7 @@ import Image from "next/image";
 import Button from "../../../components/ui/Button";
 import Link from "next/link";
 
-export default function Navbar() {
+export default function LandingNavbar() {
   return (
     <nav className="bg-white py-[9.5px]">
       <div className="container mx-auto flex justify-between items-center">
