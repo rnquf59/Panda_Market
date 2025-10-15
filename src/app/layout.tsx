@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import NavbarProvider from "@/components/layout/NavbarProvider";
+import ConditionalLayout from "@/components/layout/ConditionalLayout";
 
 export const metadata: Metadata = {
   title: "판다마켓 - 믿을 수 있는 중고거래 플랫폼",
@@ -23,12 +23,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="antialiased">
-        <NavbarProvider />
-        <div className="min-h-screen bg-white">
-          <main className="px-[15px] pt-[17px] pb-[35px] md:px-6 xl:px-0 xl:max-w-[1200px] xl:mx-auto">
-            {children}
-          </main>
-        </div>
+        <ConditionalLayout>{children}</ConditionalLayout>
       </body>
     </html>
   );
