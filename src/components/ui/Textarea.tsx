@@ -6,7 +6,7 @@ interface TextareaPorps
   className?: string;
 }
 
-export default function Input({
+export default function textarea({
   errorMessage,
   className = "",
   ...props
