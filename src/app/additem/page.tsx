@@ -2,6 +2,7 @@
 
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
+import Textarea from "@/components/ui/Textarea";
 import Image from "next/image";
 
 export default function AddItemPage() {
@@ -31,28 +32,33 @@ export default function AddItemPage() {
             </span>
           </div>
         </div>
+      </div>
 
-        {/* 상품 명 */}
-        <div>
-          <h2 className="text-2lg font-bold text-gray-800 mb-4">상품명</h2>
-          <Input type="text" placeholder="상품명을 입력해주세요" />
-        </div>
+      {/* 상품 명 */}
+      <div>
+        <h2 className="text-2lg font-bold text-gray-800 mb-4">상품명</h2>
+        <Input type="text" placeholder="상품명을 입력해주세요" />
+      </div>
 
-        {/* 상품 소개 */}
-        <div>
-          <h2 className="text-2lg font-bold text-gray-800 mb-4">상품 소개</h2>
-            <           
-        </div>
-        
-        <div>
-          <h2 className="text-2lg font-bold text-gray-800 mb-4">판매가격</h2>
-                   
-        </div>
-        
-        <div>
-          <h2 className="text-2lg font-bold text-gray-800 mb-4">판매가격</h2>
-                   
-        </div>
+      {/* 상품 소개 */}
+      <div>
+        <h2 className="text-2lg font-bold text-gray-800 mb-4">상품 소개</h2>
+        <Textarea
+          placeholder="상품 소개를 입력해주세요"
+          className="h-[282px]"
+        />
+      </div>
+
+      {/* 판매가격 */}
+      <div>
+        <h2 className="text-2lg font-bold text-gray-800 mb-4">판매 가격</h2>
+        <Input type="text" placeholder="판매 가격을 입력해주세요" />
+      </div>
+
+      {/* 태그 */}
+      <div>
+        <h2 className="text-2lg font-bold text-gray-800 mb-4">태그</h2>
+        <Input type="text" placeholder="태그를 입력해주세요" />
       </div>
     </div>
   );
