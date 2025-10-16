@@ -5,6 +5,7 @@ import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import TagInput from "./_components/TagInput";
 
 export default function AddItemPage() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -37,7 +38,7 @@ export default function AddItemPage() {
     <div className="flex flex-col gap-6">
       {/* 제목과 등록 버튼 */}
       <div className="flex justify-between items-center">
-        <h1 className="">상품 등록하기</h1>
+        <h1 className="text-xl font-bold text-gray-800">상품 등록하기</h1>
         <Button variant="primary" size="small-40" disabled>
           등록
         </Button>
@@ -124,7 +125,11 @@ export default function AddItemPage() {
       {/* 태그 */}
       <div>
         <h2 className="text-2lg font-bold text-gray-800 mb-4">태그</h2>
-        <Input type="text" placeholder="태그를 입력해주세요" />
+        <TagInput
+          tags={tags}
+          onTagsChange={setTags}
+          placeholder="태그를 입력해주세요"
+        />
       </div>
     </div>
   );
