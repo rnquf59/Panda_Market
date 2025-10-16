@@ -1,8 +1,8 @@
-import Footer from "./components/footer";
+import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import Landing from "./components/LandingMain";
 import LandingNavbar from "./components/LandingNavbar";
-import Trust from "./components/turst";
+import Trust from "./components/Turst";
 
 export default function HomePage() {
   return (
