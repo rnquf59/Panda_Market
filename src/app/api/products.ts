@@ -1,5 +1,10 @@
 import axios from "axios";
-import { ProductListResponse, SearchParams } from "../../types/product";
+import {
+  CreateProductRequest,
+  CreateProductResponse,
+  ProductListResponse,
+  SearchParams,
+} from "../../types/product";
 import { apiClient } from "./client";
 
 export const productAPI = {
@@ -56,6 +61,22 @@ export const productAPI = {
       const response = await apiClient.get(
         `/products?${queryParams.toString()}`
       );
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(
+          `API Error: ${error.response?.status} ${error.message}`
+        );
+      }
+      throw new Error("알 수 없는 오류가 발생했습니다.");
+    }
+  },
+
+  createProduct: async (
+    productData: CreateProductRequest
+  ): Promise<CreateProductResponse> => {
+    try {
+      const response = await apiClient.post("/products", productData);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
