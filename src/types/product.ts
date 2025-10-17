@@ -35,3 +35,24 @@ export interface SearchParams {
   pageSize?: number;
   orderBy?: "recent" | "favorite";
 }
+
+export interface CreateProductRequest {
+  name: string;
+  description: string;
+  price: number;
+  images: string[];
+  tags: string[];
+}
+
+export interface CreateProductResponse {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  favoritCount: number;
+  ownerId: number;
+  ownerNickname: string;
+  images: string[];
+  tags: string[];
+  createAt: string;
+}
