@@ -19,9 +19,14 @@ export default function AddItemPage() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [imageLimitError, setImageLimitError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageClick = () => {
+    if (selectedImage) {
+      setImageLimitError("*이미지 등록은 최대 1개까지 가능합니다.");
+      return;
+    }
     fileInputRef.current?.click();
   };
 
@@ -31,6 +36,7 @@ export default function AddItemPage() {
       const reader = new FileReader();
       reader.onload = (e) => {
         setSelectedImage(e.target?.result as string);
+        setImageLimitError(null);
       };
       reader.readAsDataURL(file);
     }
@@ -38,6 +44,7 @@ export default function AddItemPage() {
 
   const handleImageRemove = () => {
     setSelectedImage(null);
+    setImageLimitError(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -57,7 +64,6 @@ export default function AddItemPage() {
       formData.name.trim() &&
       formData.description.trim() &&
       formData.price.trim() &&
-      selectedImage &&
       tags.length > 0
     );
   };
@@ -175,6 +181,13 @@ export default function AddItemPage() {
           onChange={handleImageChange}
           className="hidden"
         />
+
+        {/* 이미지 등록 제한 에러 메시지 */}
+        {imageLimitError && (
+          <p className="text-lg font-regular text-error mt-4">
+            {imageLimitError}
+          </p>
+        )}
       </div>
 
       {/* 상품 명 */}
