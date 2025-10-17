@@ -1,7 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
+  const pathname = usePathname();
+
+  const isItemPage = pathname === "/item" || pathname === "/additem";
+
   return (
     <nav className="bg-white border-b border-[#DFDFDF]">
       <div className="px-4 py-[15px]">
@@ -20,7 +25,12 @@ export default function Navbar() {
             <Link href="/board" className="text-lg font-bold text-gray-600">
               자유게시판
             </Link>
-            <Link href="/item" className="text-lg font-bold text-gray-600 ">
+            <Link
+              href="/item"
+              className={`text-lg font-bold ${
+                isItemPage ? "text-primary-100" : "text-gray-600"
+              }`}
+            >
               중고마켓
             </Link>
           </div>

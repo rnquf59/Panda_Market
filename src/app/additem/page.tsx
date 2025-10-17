@@ -4,12 +4,21 @@ import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import TagInput from "./_components/TagInput";
+import { CreateProductRequest } from "@/types/product";
+import { productAPI } from "../api/products";
 
 export default function AddItemPage() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [tags, setTags] = useState<string[]>([]);
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    price: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageClick = () => {
@@ -34,15 +43,82 @@ export default function AddItemPage() {
     }
   };
 
+  const handleInputChange =
+    (field: keyof typeof formData) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setFormData((prev) => ({
+        ...prev,
+        [field]: e.target.value,
+      }));
+    };
+
+  const isFormValid = () => {
+    return (
+      formData.name.trim() &&
+      formData.description.trim() &&
+      formData.price.trim() &&
+      selectedImage &&
+      tags.length > 0
+    );
+  };
+
+  const hnadleSumbit = async () => {
+    if (!isFormValid()) {
+      setError("모든 필드를 입력해주세요.");
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const productData: CreateProductRequest = {
+        name: formData.name.trim(),
+        description: formData.description.trim(),
+        price: parseInt(formData.price.replace(/[^0-9]/g, "")),
+        images: [selectedImage!],
+        tags: tags.map((tag) => tag.replace("#", "")),
+      };
+
+      const response = await productAPI.createProduct(productData);
+      console.log("상품 등록 성공:", response);
+
+      setFormData({ name: "", description: "", price: "" });
+      setTags([]);
+      setSelectedImage(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    } catch (err) {
+      console.error("상품 등록 실패:", err);
+      setError(
+        err instanceof Error ? err.message : "상품 등록에 실패했습니다."
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-6">
       {/* 제목과 등록 버튼 */}
       <div className="flex justify-between items-center">
         <h1 className="text-xl font-bold text-gray-800">상품 등록하기</h1>
-        <Button variant="primary" size="small-40" disabled>
-          등록
+        <Button
+          variant="primary"
+          size="small-40"
+          disabled={!isFormValid || isLoading}
+          onClick={hnadleSumbit}
+        >
+          {isLoading ? "등록 중..." : "등록"}
         </Button>
       </div>
+
+      {error && (
+        <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
+          <p className="text-red-600 text-sm">{error}</p>
+        </div>
+      )}
 
       {/* 상품 이미지 */}
       <div>
@@ -104,7 +180,12 @@ export default function AddItemPage() {
       {/* 상품 명 */}
       <div>
         <h2 className="text-2lg font-bold text-gray-800 mb-4">상품명</h2>
-        <Input type="text" placeholder="상품명을 입력해주세요" />
+        <Input
+          type="text"
+          placeholder="상품명을 입력해주세요"
+          value={formData.name}
+          onChange={handleInputChange("name")}
+        />
       </div>
 
       {/* 상품 소개 */}
@@ -113,13 +194,20 @@ export default function AddItemPage() {
         <Textarea
           placeholder="상품 소개를 입력해주세요"
           className="h-[282px]"
+          value={formData.description}
+          onChange={handleInputChange("description")}
         />
       </div>
 
       {/* 판매가격 */}
       <div>
         <h2 className="text-2lg font-bold text-gray-800 mb-4">판매 가격</h2>
-        <Input type="text" placeholder="판매 가격을 입력해주세요" />
+        <Input
+          type="text"
+          placeholder="판매 가격을 입력해주세요"
+          value={formData.price}
+          onChange={handleInputChange("price")}
+        />
       </div>
 
       {/* 태그 */}
