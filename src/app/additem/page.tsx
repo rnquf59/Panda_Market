@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useAddItem } from "./hooks/useAdditem";
 import AddItemHeader from "./_components/AddItemHeader";
 import ErrorMessage from "./_components/ErrorMessage";
@@ -49,7 +48,6 @@ export default function AddItemPage() {
         onChange={handleInputChange("name")}
       />
 
-      {/* 4. 상품 소개 */}
       <ProductFormField
         title="상품 소개"
         type="textarea"
@@ -58,7 +56,6 @@ export default function AddItemPage() {
         onChange={handleInputChange("description")}
       />
 
-      {/* 5. 판매가격 */}
       <ProductFormField
         title="판매가격"
         type="text"
@@ -67,7 +64,6 @@ export default function AddItemPage() {
         onChange={handleInputChange("price")}
       />
 
-      {/* 6. 태그 */}
       <TagInput
         tags={tags}
         onTagsChange={setTags}
