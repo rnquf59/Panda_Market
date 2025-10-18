@@ -36,7 +36,8 @@ export default function Button({
       "bg-primary-100 text-gray-100 hover:bg-primary-200 active:bg-primary-300 disabled:bg-gray-400",
     secondary:
       "bg-gray-50 text-primary-100 border border-primary-100 hover:bg-primary-200 hover:text-gray-100 active:bg-primary-300 active:text-gray-100 disabled:bg-gray-400 disabled:text-gray-100 disabled:border-gray-400",
-    heart: "bg-transparent hover:bg-gray-50 active:bg-gray-100",
+    heart:
+      "bg-white border border-gray-200 hover:bg-gray-50 active:bg-gray-100",
   };
 
   const sizes = {
