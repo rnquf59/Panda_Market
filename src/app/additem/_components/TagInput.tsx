@@ -32,6 +32,7 @@ export default function TagInput({
 
   return (
     <div>
+      <h2 className="text-2lg font-bold text-gray-800 mb-4">태그</h2>
       <div className="w-full">
         <Input
           type="text"

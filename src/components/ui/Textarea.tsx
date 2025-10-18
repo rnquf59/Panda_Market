@@ -22,7 +22,7 @@ export default function Textarea({
         />
       </div>
       {errorMessage && (
-        <p className="mt-2 text-sm text-error">{errorMessage}</p>
+        <p className="mt-2 text-lg text-error">{errorMessage}</p>
       )}
     </div>
   );

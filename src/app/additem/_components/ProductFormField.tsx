@@ -3,7 +3,7 @@ import Textarea from "@/components/ui/Textarea";
 
 interface ProductFormFieldProps {
   title: string;
-  type: "text" | " Textarea";
+  type: "text" | "textarea";
   placeholder: string;
   value: string;
   onChange: (
