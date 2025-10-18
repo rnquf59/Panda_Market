@@ -59,11 +59,11 @@ export default function AddItemPage() {
       }));
     };
 
-  const isFormValid = () => {
+  const isFormValid = (): boolean => {
     return (
-      formData.name.trim() &&
-      formData.description.trim() &&
-      formData.price.trim() &&
+      formData.name.trim() !== "" &&
+      formData.description.trim() !== "" &&
+      formData.price.trim() !== "" &&
       tags.length > 0
     );
   };
