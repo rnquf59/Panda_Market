@@ -16,7 +16,7 @@ export default function Input({
       <div className="relative">
         <input
           {...props}
-          className={`w-full px-6 py-[15px] text-lg font-regular rounded-xl bg-gray-100 placeholder-gray-400 border border-transparent focus:bg-gray-50 focus:border-primary-100 focus:placeholder-gray-800 focus:outline-none [&:not(:placeholder-shown)]:placeholder-gray-800 ${
+          className={`w-full px-6 py-[15px] text-lg font-regular rounded-xl bg-gray-100 placeholder-gray-400 border border-transparent focus:bg-gray-50 focus:border-primary-100 focus:placeholder-transparent focus:outline-none [&:not(:placeholder-shown)]:placeholder-transparent ${
             errorMessage ? "border-error" : ""
           } ${icon ? "pr-12" : ""} ${className}`}
         />

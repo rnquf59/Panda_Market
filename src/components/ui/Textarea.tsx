@@ -16,7 +16,7 @@ export default function Textarea({
       <div className="relative">
         <textarea
           {...props}
-          className={`w-full px-6 py-4 text-lg font-regular rounded-xl bg-gray-100 placeholder-gray-400 border border-transparent focus:bg-gray-50 focus:border-primary-100 focus:placeholder-gray-800 focus:outline-none [&:not(:placeholder-shown)]:placeholder-gray-800 resize-none ${
+          className={`w-full px-6 py-4 text-lg font-regular rounded-xl bg-gray-100 placeholder-gray-400 border border-transparent focus:bg-gray-50 focus:border-primary-100 focus:placeholder-transparent focus:outline-none [&:not(:placeholder-shown)]:placeholder-transparent resize-none ${
             errorMessage ? "border-error" : ""
           } ${className}`}
         />
