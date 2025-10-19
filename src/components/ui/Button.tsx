@@ -2,14 +2,15 @@ import Image from "next/image";
 import React from "react";
 
 interface ButtonProps {
-  variant: "primary" | "secondary" | "heart";
+  variant: "primary" | "secondary" | "heart" | "back";
   size:
     | "large"
     | "medium"
     | "small-40"
     | "small-48"
     | "heart-large"
-    | "heart-small";
+    | "heart-small"
+    | "back";
   children: React.ReactNode;
   onClick?: () => void;
   className?: string;
@@ -38,6 +39,7 @@ export default function Button({
       "bg-gray-50 text-primary-100 border border-primary-100 hover:bg-primary-200 hover:text-gray-100 active:bg-primary-300 active:text-gray-100 disabled:bg-gray-400 disabled:text-gray-100 disabled:border-gray-400",
     heart:
       "bg-white border border-gray-200 hover:bg-gray-50 active:bg-gray-100",
+    back: "bg-primary-100 text-gray-100 hover:bg-primary-200 active:bg-primary-300 disabled:bg-gray-400",
   };
 
   const sizes = {
@@ -47,6 +49,7 @@ export default function Button({
     "small-48": "px-[43px] py-[11px] text-lg rounded-lg",
     "heart-large": "px-3 py-1 rounded-[35px] flex items-center gap-1",
     "heart-small": "px-3 py-[3px] rounded-[35px] flex items-center gap-1",
+    back: "px-[39.5px] py-[11px] text-lg rounded-lg flex items-center gap-2",
   };
 
   return (
@@ -73,6 +76,19 @@ export default function Button({
           <span className="text-lg font-medium text-gray-500 flex items-center justify-center">
             {children}
           </span>
+        </>
+      ) : variant === "back" ? (
+        <>
+          <span className="text-lg font-semibold text-gray-100">
+            {children}
+          </span>
+          <Image
+            src="/icon/ic_back.svg"
+            alt="뒤로가기"
+            width={24}
+            height={24}
+            className="w-6 h-6"
+          />
         </>
       ) : (
         children

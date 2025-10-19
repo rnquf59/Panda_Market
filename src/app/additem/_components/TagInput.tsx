@@ -1,6 +1,6 @@
 import Input from "@/components/ui/Input";
 import React, { useState } from "react";
-import Tag from "./Tag";
+import Tag from "../../../components/ui/Tag";
 
 interface TagInputProps {
   tags: string[];
