@@ -49,7 +49,7 @@ export default function Button({
     "small-48": "px-[43px] py-[11px] text-lg rounded-lg",
     "heart-large": "px-3 py-1 rounded-[35px] flex items-center gap-1",
     "heart-small": "px-3 py-[3px] rounded-[35px] flex items-center gap-1",
-    back: "px-[39.5px] py-[11px] text-lg rounded-lg flex items-center gap-2",
+    back: "px-[39.5px] py-[11px] text-2lg rounded-full flex items-center gap-2",
   };
 
   return (
