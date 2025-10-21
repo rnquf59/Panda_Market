@@ -1,10 +1,10 @@
 "use client";
 
 import ItemNavbar from "@/components/layout/Navbar";
-import ProductCard from "../item/components/ProductCard";
-import ProductList from "../item/components/ProductList";
-import Pagination from "../item/components/Pagination";
-import SearchAndFilter from "../item/components/SearchAndFilter";
+import ProductCard from "../items/components/ProductCard";
+import ProductList from "../items/components/ProductList";
+import Pagination from "../items/components/Pagination";
+import SearchAndFilter from "../items/components/SearchAndFilter";
 import { useState } from "react";
 
 export default function TestPage() {
