@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { CreateProductRequest } from "@/types/product";
-import { productAPI } from "@/app/api/products";
+import { productAPI } from "@/api/products";
 
 export function useAddItem() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);

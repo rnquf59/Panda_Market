@@ -2,9 +2,10 @@ import axios from "axios";
 import {
   CreateProductRequest,
   CreateProductResponse,
+  ProductDetailResponse,
   ProductListResponse,
   SearchParams,
-} from "../../types/product";
+} from "../types/product";
 import { apiClient } from "./client";
 
 export const productAPI = {

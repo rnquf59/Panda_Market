@@ -1,6 +1,6 @@
 "use client";
 
-import { productAPI } from "@/app/api/products";
+import { productAPI } from "@/api/products";
 import { ProductCard } from "@/types/product";
 import { useStore } from "@/stores/useStore";
 import { useEffect, useState } from "react";

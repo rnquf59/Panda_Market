@@ -56,3 +56,21 @@ export interface CreateProductResponse {
   tags: string[];
   createAt: string;
 }
+
+export interface ProductDetailResponse {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  favoriteCount: number;
+  ownerId: number;
+  ownerNickname: string;
+  images: string[];
+  tags: string[];
+  createdAt: string;
+  isFavorite: boolean;
+}
+
+export interface ApiErrorResponse {
+  message: string;
+}
