@@ -107,4 +107,44 @@ export const productAPI = {
       throw new Error("알 수 없는 오류가 발생했습니다");
     }
   },
+
+  addProductFavorite: async (
+    productId: number
+  ): Promise<ProductDetailResponse> => {
+    try {
+      const response = await apiClient.post(`/products/${productId}/favorite`);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 404) {
+          throw new Error("상품을 찾을 수 없습니다.");
+        }
+        throw new Error(
+          `API Error: ${error.response?.status} ${error.message}`
+        );
+      }
+      throw new Error("알 수 없는 오류가 발생했습니다.");
+    }
+  },
+
+  removeProductFavorite: async (
+    productId: number
+  ): Promise<ProductDetailResponse> => {
+    try {
+      const response = await apiClient.delete(
+        `/products/${productId}/favorite`
+      );
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 404) {
+          throw new Error("상품을 찾을 수 없습니다.");
+        }
+        throw new Error(
+          `API Error: ${error.response?.status} ${error.message}`
+        );
+      }
+      throw new Error("알 수 없는 오류가 발생했습니다.");
+    }
+  },
 };
