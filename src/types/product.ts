@@ -74,3 +74,28 @@ export interface ProductDetailResponse {
 export interface ApiErrorResponse {
   message: string;
 }
+
+export interface CommentWriter {
+  image: string;
+  nickname: string;
+  id: number;
+}
+
+export interface Comment {
+  id: number;
+  content: string;
+  writer: CommentWriter;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CommentListResponse {
+  nextCursor: number;
+  list: Comment[];
+}
+
+export interface CommentListParams {
+  productId: number;
+  limit: number;
+  cursor?: number;
+}

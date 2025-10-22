@@ -4,7 +4,9 @@ import Button from "@/components/ui/Button";
 import Dropdown from "@/components/ui/Dropdown";
 import Tag from "@/components/ui/Tag";
 import Textarea from "@/components/ui/Textarea";
+import { ProductDetailResponse } from "@/types/product";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface Inquiry {
@@ -14,47 +16,15 @@ interface Inquiry {
   date: string;
 }
 
-const mockInquiries: Inquiry[] = [
-  {
-    id: 1,
-    content: "혹시 사용기간이 어떻게 되실까요? 구매 전에 확인하고 싶어서요!",
-    author: "김민수",
-    date: "2024. 01. 15",
-  },
-  {
-    id: 2,
-    content: "배송은 어떻게 되나요? 택배비는 별도인가요?",
-    author: "이지은",
-    date: "2024. 01. 14",
-  },
-  {
-    id: 3,
-    content: "가격 협상 가능한가요? 조금 더 저렴하게 해주실 수 있나요?",
-    author: "박준호",
-    date: "2024. 01. 13",
-  },
-  {
-    id: 4,
-    content: "상품 상태가 어떤가요? 스크래치나 흠집은 없나요?",
-    author: "최서연",
-    date: "2024. 01. 12",
-  },
-  {
-    id: 5,
-    content: "직거래 가능한가요? 서울 강남구 근처에서 만날 수 있나요?",
-    author: "정민우",
-    date: "2024. 01. 11",
-  },
-  {
-    id: 6,
-    content:
-      "구매 후 환불이나 교환이 가능한가요? 혹시 문제가 생기면 어떻게 하나요?",
-    author: "한소영",
-    date: "2024. 01. 10",
-  },
-];
-
 export default function ProductDetailPage() {
+  const params = useParams();
+  const productId = Number(params.id);
+
+  const [product, setProduct] = useState<ProductDetailResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [inquiryText, setInquiryText] = useState("");
   const [showDropdown, setShowDropdown] = useState<number | null>(null);
   const [isHeartLiked, setIsHeartLiked] = useState(false);
