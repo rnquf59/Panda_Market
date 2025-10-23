@@ -34,7 +34,6 @@ export default function InquiryItem({
   return (
     <div className="border-b border-gray-200 mb-3">
       {isEditing ? (
-        // 수정 모드
         <div className="flex flex-col gap-4 mb-3">
           <Textarea
             value={editText}
@@ -44,7 +43,6 @@ export default function InquiryItem({
           />
 
           <div className="flex justify-between items-center">
-            {/* 프로필 정보 */}
             <div className="flex items-center gap-2">
               <Image
                 src={comment.writer.image || "/icon/ic_profile.png"}
@@ -70,7 +68,6 @@ export default function InquiryItem({
               </div>
             </div>
 
-            {/* 취소/수정완료 버튼 */}
             <div className="flex gap-1">
               <button
                 onClick={onEditCancel}
@@ -90,9 +87,7 @@ export default function InquiryItem({
           </div>
         </div>
       ) : (
-        // 일반 모드
         <div className="flex justify-between items-start gap-4 mb-3">
-          {/* 문의 내용과 프로필 */}
           <div className="flex flex-col gap-6">
             <p className="text-md font-regular text-gray-800">
               {comment.content}
@@ -124,7 +119,6 @@ export default function InquiryItem({
             </div>
           </div>
 
-          {/* 케밥 아이콘 */}
           <div className="relative">
             <Image
               src="/icon/ic_kebab.svg"
