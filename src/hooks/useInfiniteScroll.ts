@@ -1,141 +1,64 @@
-import { useState, useCallback } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
-interface UseInfiniteScrollOptions<T, P = Record<string, unknown>> {
-  fetchFunction: (params: P) => Promise<{
+interface UseInfiniteScrollOptions<T> {
+  queryKey: unknown[];
+  queryFn: (params: { cursor?: number; limit: number }) => Promise<{
     list: T[];
     nextCursor?: number;
   }>;
-  initialParams: P;
+  initialLimit?: number;
   limit?: number;
-  loadingDelay?: number; // 로딩 시간 (ms)
+  staleTime?: number;
+  gcTime?: number;
 }
 
 interface UseInfiniteScrollReturn<T> {
   data: T[];
-  loading: boolean;
-  hasMore: boolean;
-  error: string | null;
-  loadMore: () => Promise<void>;
-  refresh: () => Promise<void>;
-  reset: () => void;
-  loadInitialData: () => Promise<void>;
+  isLoading: boolean;
+  isFetchingNextPage: boolean;
+  hasNextPage: boolean;
+  fetchNextPage: () => void;
+  error: Error | null;
+  refetch: () => void;
 }
 
-export function useInfiniteScroll<T, P = Record<string, unknown>>({
-  fetchFunction,
-  initialParams,
+export function useInfiniteScroll<T>({
+  queryKey,
+  queryFn,
+  initialLimit = 10,
   limit = 10,
-  loadingDelay = 0,
-}: UseInfiniteScrollOptions<T, P>): UseInfiniteScrollReturn<T> {
-  const [data, setData] = useState<T[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [nextCursor, setNextCursor] = useState<number | undefined>(undefined);
-  const [isInitialized, setIsInitialized] = useState(false);
-
-  const loadInitialData = useCallback(async () => {
-    if (isInitialized) return;
-
-    try {
-      setLoading(true);
-      setError(null);
-      const result = await fetchFunction({
-        ...initialParams,
-        limit,
+  staleTime = 1000 * 60 * 5,
+  gcTime = 1000 * 60 * 10,
+}: UseInfiniteScrollOptions<T>): UseInfiniteScrollReturn<T> {
+  const query = useInfiniteQuery({
+    queryKey,
+    queryFn: async ({ pageParam }) => {
+      return queryFn({
+        cursor: pageParam,
+        limit: pageParam === undefined ? initialLimit : limit,
       });
-
-      setData(result.list);
-      setHasMore(result.list.length === limit);
-      setNextCursor(result.nextCursor);
-      setIsInitialized(true);
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "데이터를 불러오는데 실패했습니다."
-      );
-      setData([]);
-      setHasMore(false);
-    } finally {
-      setLoading(false);
-    }
-  }, [fetchFunction, initialParams, limit, isInitialized]);
-
-  const loadMore = useCallback(async () => {
-    if (loading || !hasMore || !nextCursor || !isInitialized) return;
-
-    try {
-      setLoading(true);
-      setError(null);
-
-      if (loadingDelay > 0) {
-        await new Promise((resolve) => setTimeout(resolve, loadingDelay));
+    },
+    initialPageParam: undefined as number | undefined,
+    getNextPageParam: (LastPage) => {
+      if (LastPage.list.length < limit) {
+        return undefined;
       }
+      return LastPage.nextCursor;
+    },
 
-      const result = await fetchFunction({
-        ...initialParams,
-        limit,
-        cursor: nextCursor,
-      });
+    staleTime,
+    gcTime,
+  });
 
-      setData((prev) => [...prev, ...result.list]);
-      setHasMore(result.list.length === limit);
-      setNextCursor(result.nextCursor);
-    } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "추가 데이터를 불러오는데 실패했습니다."
-      );
-      setHasMore(false);
-    } finally {
-      setLoading(false);
-    }
-  }, [
-    fetchFunction,
-    initialParams,
-    limit,
-    loading,
-    hasMore,
-    nextCursor,
-    isInitialized,
-    loadingDelay,
-  ]);
-
-  const refresh = useCallback(async () => {
-    try {
-      setError(null);
-      const result = await fetchFunction({
-        ...initialParams,
-        limit,
-      });
-
-      setData(result.list);
-      setHasMore(result.list.length === limit);
-      setNextCursor(result.nextCursor);
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "데이터 새로고침에 실패했습니다."
-      );
-    }
-  }, [fetchFunction, initialParams, limit]);
-
-  const reset = useCallback(() => {
-    setData([]);
-    setLoading(false);
-    setHasMore(true);
-    setError(null);
-    setNextCursor(undefined);
-    setIsInitialized(false);
-  }, []);
+  const data = query.data?.pages.flatMap((page) => page.list) ?? [];
 
   return {
     data,
-    loading,
-    hasMore,
-    error,
-    loadMore,
-    refresh,
-    reset,
-    loadInitialData,
+    isLoading: query.isLoading,
+    isFetchingNextPage: query.isFetchingNextPage,
+    hasNextPage: query.hasNextPage,
+    fetchNextPage: query.fetchNextPage,
+    error: query.error,
+    refetch: query.refetch,
   };
 }
