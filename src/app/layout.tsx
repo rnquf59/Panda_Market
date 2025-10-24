@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ConditionalLayout from "@/components/layout/ConditionalLayout";
+import QueryProvider from "@/components/providers/QueryProvider";
 
 export const metadata: Metadata = {
   title: "판다마켓 - 믿을 수 있는 중고거래 플랫폼",
@@ -23,7 +24,9 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="antialiased">
-        <ConditionalLayout>{children}</ConditionalLayout>
+        <QueryProvider>
+          <ConditionalLayout>{children}</ConditionalLayout>
+        </QueryProvider>
       </body>
     </html>
   );
