@@ -1,12 +1,13 @@
 "use client";
 
-import { productAPI } from "@/api/products";
 import Button from "@/components/ui/Button";
 import Tag from "@/components/ui/Tag";
-import { useAddProductFavorite } from "@/hooks/useProducts";
+import {
+  useAddProductFavorite,
+  useRemoveProductFavorit,
+} from "@/hooks/useProducts";
 import { ProductDetailResponse } from "@/types/product";
 import Image from "next/image";
-import { useState } from "react";
 
 interface ProductInfoProps {
   product: ProductDetailResponse;
@@ -14,19 +15,15 @@ interface ProductInfoProps {
 
 export default function ProductInfo({ product }: ProductInfoProps) {
   const addFavoriteMutation = useAddProductFavorite();
+  const removeFavoriteMutation = useRemoveProductFavorit();
 
   const handleHeartToggle = async () => {
     try {
-      let updatedProduct: ProductDetailResponse;
-
-      if (isHeartLiked) {
-        updatedProduct = await productAPI.removeProductFavorite(product.id);
+      if (product.isFavorite) {
+        await removeFavoriteMutation.mutateAsync(product.id);
       } else {
-        updatedProduct = await productAPI.addProductFavorite(product.id);
+        await addFavoriteMutation.mutateAsync(product.id);
       }
-
-      setIsHeartLiked(updatedProduct.isFavorite);
-      setFavoriteCount(updatedProduct.favoriteCount);
     } catch (error) {
       console.error("좋아요 처리 실패:", error);
     }
@@ -117,11 +114,15 @@ export default function ProductInfo({ product }: ProductInfoProps) {
               <Button
                 variant="heart"
                 size="heart-small"
-                heartIcon={isHeartLiked ? "pink" : "line"}
+                heartIcon={product.isFavorite ? "pink" : "line"}
                 onClick={handleHeartToggle}
                 className="ml-6"
+                disabled={
+                  addFavoriteMutation.isPending ||
+                  removeFavoriteMutation.isPending
+                }
               >
-                {favoriteCount}
+                {product.favoriteCount}
               </Button>
             </div>
           </div>
