@@ -29,3 +29,17 @@ export function useAddProductFavorite() {
     },
   });
 }
+
+export function useRemoveProductFavorit() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (productId: number) =>
+      productAPI.removeProductFavorite(productId),
+    onSuccess: (_, productId) => {
+      queryClient.invalidateQueries({
+        queryKey: porductKeys.detail(productId),
+      });
+    },
+  });
+}

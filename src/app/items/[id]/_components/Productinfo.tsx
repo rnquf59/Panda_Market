@@ -3,6 +3,7 @@
 import { productAPI } from "@/api/products";
 import Button from "@/components/ui/Button";
 import Tag from "@/components/ui/Tag";
+import { useAddProductFavorite } from "@/hooks/useProducts";
 import { ProductDetailResponse } from "@/types/product";
 import Image from "next/image";
 import { useState } from "react";
@@ -12,8 +13,7 @@ interface ProductInfoProps {
 }
 
 export default function ProductInfo({ product }: ProductInfoProps) {
-  const [isHeartLiked, setIsHeartLiked] = useState(product.isFavorite);
-  const [favoriteCount, setFavoriteCount] = useState(product.favoriteCount);
+  const addFavoriteMutation = useAddProductFavorite();
 
   const handleHeartToggle = async () => {
     try {
