@@ -58,7 +58,6 @@ export default function ProductDetailPage() {
     );
   }
 
-  // 상품 데이터가 없는 경우
   if (!product) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
