@@ -1,5 +1,6 @@
 "use client";
 
+import { authAPI } from "@/api/auth";
 import Button from "@/components/ui/Button";
 import { LoginFormData, loginSchema } from "@/schemas/authSchema";
 import { useStore } from "@/stores/useStore";
@@ -29,7 +30,22 @@ export default function LoginPage() {
   const passwordValue = watch("password");
 
   const onSubmit = (data: LoginFormData) => {
-    console.log("로그인 데이터:", data);
+    try {
+      const response = await authAPI.login(data.email, data.password);
+
+      if (response.success) {
+        const { user, accessToken, refreshToken } = response.data;
+
+        login(
+          {
+            id: user.id.toString(),
+            name: user.nickname,
+            email: user.email,
+          },
+          { accessToken, refreshToken }
+        );
+      }
+    } catch (error) {}
   };
 
   const handleSocialLogin = (provier: "google" | "kakao") => {
