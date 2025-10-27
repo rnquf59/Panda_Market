@@ -2,6 +2,18 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 interface AppState {
+  user: {
+    id: string | null;
+    name: string | null;
+    email: string | null;
+    isLoggedIn: boolean;
+  };
+
+  tokens: {
+    accessToken: string | null;
+    refreshToken: string | null;
+  };
+
   ui: {
     isLoading: boolean;
   };
@@ -10,7 +22,13 @@ interface AppState {
   searchQuery: string;
   sortBy: "recent" | "favorite";
 
-  //   액션들
+  setUser: (user: Partial<AppState["user"]>) => void;
+  setTokens: (tokens: AppState["tokens"]) => void;
+  login: (
+    user: { id: string; name: string; email: string },
+    tokens: { accessToken: string; refreshToken: string }
+  ) => void;
+  logout: () => void;
   setLoading: (Loading: boolean) => void;
   setSearchQuery: (query: string) => void;
   setSortBy: (sortby: "recent" | "favorite") => void;
@@ -19,6 +37,18 @@ interface AppState {
 export const useStore = create<AppState>()(
   devtools(
     (set) => ({
+      user: {
+        id: null,
+        name: null,
+        email: null,
+        isLoggedIn: false,
+      },
+
+      tokens: {
+        accessToken: null,
+        refreshToken: null,
+      },
+
       ui: {
         isLoading: false,
       },
@@ -26,7 +56,46 @@ export const useStore = create<AppState>()(
       searchQuery: "",
       sortBy: "recent",
 
-      // 액션들
+      setUser: (userData) =>
+        set((state) => ({
+          user: { ...state.user, ...userData, isLoggedIn: true },
+        })),
+
+      setTokens: (tokens) => set(() => ({ tokens })),
+
+      login: (userData, tokens) =>
+        set(() => {
+          localStorage.setItem("accessToken", tokens.accessToken);
+          localStorage.setItem("refreshToken", tokens.refreshToken);
+
+          return {
+            user: {
+              ...userData,
+              isLoggedIn: true,
+            },
+            tokens,
+          };
+        }),
+
+      logout: () =>
+        set(() => {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+
+          return {
+            user: {
+              id: null,
+              name: null,
+              email: null,
+              isLoggedIn: false,
+            },
+            tokens: {
+              accessToken: null,
+              refreshToken: null,
+            },
+          };
+        }),
+
       setLoading: (Loading) =>
         set((state) => ({
           ui: { ...state.ui, isLoading: Loading },
