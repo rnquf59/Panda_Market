@@ -2,14 +2,18 @@
 
 import Button from "@/components/ui/Button";
 import { LoginFormData, loginSchema } from "@/schemas/authSchema";
+import { useStore } from "@/stores/useStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+  const { login } = useStore();
 
   const {
     register,

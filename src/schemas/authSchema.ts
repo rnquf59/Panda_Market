@@ -34,4 +34,4 @@ export const signupSchema = z
   });
 
 export type LoginFormData = z.infer<typeof loginSchema>;
-export type SignFormData = z.infer<typeof signupSchema>;
+export type SignupFormData = z.infer<typeof signupSchema>;
