@@ -1,23 +1,27 @@
 "use client";
 
+import { authAPI } from "@/api/auth";
 import Button from "@/components/ui/Button";
-import { SignFormData, signupSchema } from "@/schemas/authSchema";
+import { SignupFormData, signupSchema } from "@/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const router = useRouter();
 
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors, isSubmitting, isValid },
-  } = useForm<SignFormData>({
+  } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
     mode: "onChange",
   });
@@ -27,8 +31,20 @@ export default function SignupPage() {
   const passwordValue = watch("password");
   const confirmPasswordValue = watch("confirmPassword");
 
-  const onSubmit = (data: SignFormData) => {
-    console.log("회원가입 데이터:", data);
+  const onSubmit = async (data: SignupFormData) => {
+    try {
+      await authAPI.signup(data);
+      toast.success("회원가입이 완료되었습니다. 로그인해주세요.");
+      router.push("/auth/login");
+    } catch (error: unknown) {
+      console.error("회원가입 실패:", error);
+      const errorMessage =
+        error instanceof Error && "response" in error
+          ? (error as { response?: { data?: { message?: string } } }).response
+              ?.data?.message || "회원가입 중 오류가 발생했습니다."
+          : "회원가입 중 오류가 발생했습니다.";
+      toast.error(errorMessage);
+    }
   };
 
   const handleSocialLogin = (provier: "google" | "kakao") => {
@@ -190,7 +206,7 @@ export default function SignupPage() {
             disabled={!isValid || isSubmitting}
             className="w-full"
           >
-            {isSubmitting ? "로그인중..." : "로그인"}
+            {isSubmitting ? "회원가입중..." : "회원가입"}
           </Button>
         </form>
 
