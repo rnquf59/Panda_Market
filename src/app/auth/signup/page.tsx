@@ -26,7 +26,7 @@ export default function SignupPage() {
     mode: "onChange",
   });
 
-  const emialValue = watch("email");
+  const emailValue = watch("email");
   const nicknameValue = watch("nickname");
   const passwordValue = watch("password");
   const confirmPasswordValue = watch("confirmPassword");
@@ -79,7 +79,7 @@ export default function SignupPage() {
               className={`w-full px-6 py-[15px] text-lg font-normal text-gray-800 bg-gray-100 rounded-[12px] focus:outline-none autofill:bg-gray-100 ${
                 errors.email
                   ? "border border-error"
-                  : emialValue
+                  : emailValue
                   ? "border border-primary-100"
                   : "border-none"
               }`}
@@ -242,12 +242,12 @@ export default function SignupPage() {
 
         <div className="text-center mt-4 md:mt-6">
           <p className="text-md font-medium text-gray-800">
-            판다마켓이 처음이신가요?
+            이미 회원이신가요?
             <Link
-              href="auth/signup"
+              href="auth/login"
               className="text-[#3182F6] underline hover:no-underline"
             >
-              회원가입
+              로그인
             </Link>
           </p>
         </div>
