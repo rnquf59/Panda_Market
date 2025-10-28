@@ -1,9 +1,13 @@
+import { useStore } from "@/stores/useStore";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { user, logout } = useStore();
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const isItemPage = pathname === "/item" || pathname === "/additem";
 
@@ -37,15 +41,52 @@ export default function Navbar() {
 
           {/* 오른쪽 프로필 아이콘 */}
           <div className="flex items-center">
-            <button className="cursor-pointer">
-              <Image
-                src="/icon/ic_profile.svg"
-                alt="프로필"
-                width={40}
-                height={40}
-                className="w-10 h-10"
-              />
-            </button>
+            {user.isLoggedIn ? (
+              <div className="relative">
+                <button
+                  onClick={() => setShowDropdown(!showDropdown)}
+                  className="cursor-pointer"
+                >
+                  <Image
+                    src="/icon/ic_profile.png"
+                    alt="프로필"
+                    width={40}
+                    height={40}
+                    className="w-10 h-10"
+                  />
+                </button>
+                {showDropdown && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                    <div className="px-4 py-2 text-sm text-gray-700 border-b">
+                      {user.name || user.email}
+                    </div>
+                    <Link
+                      href="/profile"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setShowDropdown(false)}
+                    >
+                      프로필
+                    </Link>
+                    <button
+                      onClick={() => {
+                        logout();
+                        setShowDropdown(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      로그아웃
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                href="/auth/login"
+                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-primary-100"
+              >
+                로그인
+              </Link>
+            )}
           </div>
         </div>
       </div>
