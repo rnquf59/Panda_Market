@@ -7,7 +7,7 @@ import { useStore } from "@/stores/useStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -27,10 +27,10 @@ export default function LoginPage() {
     mode: "onChange",
   });
 
-  const emialValue = watch("email");
+  const emailValue = watch("email");
   const passwordValue = watch("password");
 
-  const onSubmit = (data: LoginFormData) => {
+  const onSubmit = async (data: LoginFormData) => {
     try {
       const response = await authAPI.login(data.email, data.password);
 
@@ -89,7 +89,7 @@ export default function LoginPage() {
               className={`w-full px-6 py-[15px] text-lg font-normal text-gray-800 bg-gray-100 rounded-[12px] focus:outline-none autofill:bg-gray-100 ${
                 errors.email
                   ? "border border-error"
-                  : emialValue
+                  : emailValue
                   ? "border border-primary-100"
                   : "border-none"
               }`}
@@ -188,7 +188,7 @@ export default function LoginPage() {
           <p className="text-md font-medium text-gray-800">
             판다마켓이 처음이신가요?
             <Link
-              href="auth/signup"
+              href="/auth/signup"
               className="text-[#3182F6] underline hover:no-underline"
             >
               회원가입
