@@ -3,13 +3,78 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import Button from "../ui/Button";
 
 export default function Navbar() {
   const pathname = usePathname();
   const { user, logout } = useStore();
   const [showDropdown, setShowDropdown] = useState(false);
 
+  const isLandingPage = pathname === "/";
+
   const isItemPage = pathname === "/item" || pathname === "/additem";
+
+  if (isLandingPage) {
+    return (
+      <nav className="bg-white py-[9.5px]">
+        <div
+          className="
+          mx-auto 
+          px-4 
+          md:px-6 
+          lg:px-[200px] 
+          flex justify-between items-center
+        "
+        >
+          <Link href="/">
+            <Image
+              src="/logo/panda_logo.png"
+              alt="판다마켓 로고"
+              width={153}
+              height={51}
+              className="cursor-pointer"
+            />
+          </Link>
+
+          {user.isLoggedIn ? (
+            <div className="relative">
+              <button
+                onClick={() => setShowDropdown(!showDropdown)}
+                className="cursor-pointer"
+              >
+                <Image
+                  src="/icon/ic_profile.png"
+                  alt="프로필"
+                  width={40}
+                  height={40}
+                  className="w-10 h-10"
+                />
+              </button>
+              {showDropdown && (
+                <div className="absolute right-0 mt-2 bg-white rounded-md shadow-lg z-50">
+                  <button
+                    onClick={() => {
+                      logout();
+                      setShowDropdown(false);
+                    }}
+                    className="w-[102px] h-[49px] md:w-[139px] md:h-[51px] flex items-center justify-center text-md font-regular text-gray-500"
+                  >
+                    로그아웃
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link href="/auth/login">
+              <Button variant="primary" size="small-48">
+                로그인
+              </Button>
+            </Link>
+          )}
+        </div>
+      </nav>
+    );
+  }
 
   return (
     <nav className="bg-white border-b border-[#DFDFDF]">
@@ -56,23 +121,13 @@ export default function Navbar() {
                   />
                 </button>
                 {showDropdown && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                    <div className="px-4 py-2 text-sm text-gray-700 border-b">
-                      {user.name || user.email}
-                    </div>
-                    <Link
-                      href="/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setShowDropdown(false)}
-                    >
-                      프로필
-                    </Link>
+                  <div className="absolute right-0 mt-2 bg-white rounded-md shadow-lg z-50">
                     <button
                       onClick={() => {
                         logout();
                         setShowDropdown(false);
                       }}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="w-[102px] h-[49px] md:w-[139px] md:h-[51px] flex items-center justify-center text-md font-regular text-gray-500"
                     >
                       로그아웃
                     </button>
