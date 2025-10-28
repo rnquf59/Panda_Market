@@ -10,7 +10,7 @@ export function middleware(request: NextRequest) {
   const isLoggedIn = !!authToken;
 
   if (!isAllowedPath && !isLoggedIn) {
-    return NextResponse.redirect(new URL("auth/login", nextUrl));
+    return NextResponse.redirect(new URL("/auth/login", nextUrl));
   }
 
   if (nextUrl.pathname.startsWith("/auth") && isLoggedIn) {
@@ -21,5 +21,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/auth/login", "/auth/signup", "/additem", "/items", "/:path*"],
+  matcher: [],
 };

@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -44,8 +45,16 @@ export default function LoginPage() {
           },
           { accessToken, refreshToken }
         );
+
+        toast.success("로그인되었습니다!");
+        router.push("/");
+      } else {
+        toast.error("로그인에 실패했습니다");
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("로그인 실패:", error);
+      toast.error("로그인 중 오류가 발생했습니다.");
+    }
   };
 
   const handleSocialLogin = (provier: "google" | "kakao") => {
