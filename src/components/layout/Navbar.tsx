@@ -51,7 +51,7 @@ export default function Navbar() {
                 />
               </button>
               {showDropdown && (
-                <div className="absolute right-0 mt-2 bg-white rounded-md shadow-lg z-50">
+                <div className="absolute right-0 mt-2 bg-white rounded-md border border-gray-300 z-50">
                   <button
                     onClick={() => {
                       logout();
@@ -113,7 +113,7 @@ export default function Navbar() {
                   className="cursor-pointer"
                 >
                   <Image
-                    src="/icon/ic_profile.png"
+                    src="/icon/ic_profile.svg"
                     alt="프로필"
                     width={40}
                     height={40}
@@ -121,7 +121,7 @@ export default function Navbar() {
                   />
                 </button>
                 {showDropdown && (
-                  <div className="absolute right-0 mt-2 bg-white rounded-md shadow-lg z-50">
+                  <div className="absolute right-0 mt-2 bg-white rounded-md  border border-gray-300 z-50">
                     <button
                       onClick={() => {
                         logout();
