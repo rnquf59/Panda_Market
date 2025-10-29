@@ -38,7 +38,7 @@ export default function Hero() {
           </h1>
 
           <div className="inline-block w-auto mt-[18px]">
-            <Link href="/item">
+            <Link href="/items">
               <Button variant="primary" size="medium" className="lg:size-large">
                 구경하러 가기
               </Button>
