@@ -87,7 +87,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-[18px]">
               <Image
-                src="/icon/ic_profile.png"
+                src="/icon/ic_profile.svg"
                 alt="프로필"
                 width={40}
                 height={40}

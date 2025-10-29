@@ -45,7 +45,7 @@ export default function InquiryItem({
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
               <Image
-                src={comment.writer.image || "/icon/ic_profile.png"}
+                src={comment.writer.image || "/icon/ic_profile.svg"}
                 alt="프로필"
                 width={32}
                 height={32}
@@ -95,7 +95,7 @@ export default function InquiryItem({
 
             <div className="flex items-center gap-2">
               <Image
-                src={comment.writer.image || "/icon/ic_profile.png"}
+                src={comment.writer.image || "/icon/ic_profile.svg"}
                 alt="프로필"
                 width={32}
                 height={32}

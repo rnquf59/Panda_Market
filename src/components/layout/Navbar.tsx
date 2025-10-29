@@ -43,7 +43,7 @@ export default function Navbar() {
                 className="cursor-pointer"
               >
                 <Image
-                  src="/icon/ic_profile.png"
+                  src="/icon/ic_profile.svg"
                   alt="프로필"
                   width={40}
                   height={40}
