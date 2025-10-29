@@ -1,6 +1,11 @@
 import { commentAPI } from "@/api/comments";
+import {
+  useCreateComment,
+  useDeleteComment,
+  useUpdateComment,
+} from "@/hooks/useComments";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
-import { Comment, CommentListParams } from "@/types/product";
+import { Comment } from "@/types/product";
 import { useEffect, useState } from "react";
 
 interface UseInquirySectionProps {
@@ -12,42 +17,41 @@ export default function useInquirySection({
 }: UseInquirySectionProps) {
   const {
     data: comments,
-    loading,
-    hasMore,
-    loadMore,
-    refresh,
-    loadInitialData,
-  } = useInfiniteScroll<Comment, CommentListParams>({
-    fetchFunction: commentAPI.getProductComments,
-    initialParams: { productId, limit: 7 },
+    isLoading: loading,
+    hasNextPage: hasMore,
+    fetchNextPage: loadMore,
+  } = useInfiniteScroll<Comment>({
+    queryKey: ["comments", productId],
+    queryFn: ({ cursor, limit }) =>
+      commentAPI.getProductComments({
+        productId,
+        cursor,
+        limit,
+      }),
+    initialLimit: 7,
     limit: 5,
-    loadingDelay: 700,
   });
 
+  const createCommentMutation = useCreateComment();
+  const updateCommentMutation = useUpdateComment();
+  const deleteCommentMutation = useDeleteComment();
+
   const [inquiryText, setInquiryText] = useState("");
-  const [inquiryLoading, setInquiryLoading] = useState(false);
   const [editingInquiry, setEditingInquiry] = useState<number | null>(null);
   const [editText, setEditText] = useState("");
   const [showDropdown, setShowDropdown] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (productId) {
-      loadInitialData();
-    }
-  }, [productId, loadInitialData]);
 
   const handleSubmitInquiry = async () => {
     if (!inquiryText.trim()) return;
 
     try {
-      setInquiryLoading(true);
-      await commentAPI.createProductComment(productId, inquiryText);
-      await refresh();
+      await createCommentMutation.mutateAsync({
+        productId,
+        content: inquiryText,
+      });
       setInquiryText("");
     } catch (error) {
       console.error("문의 등록 실패:", error);
-    } finally {
-      setInquiryLoading(false);
     }
   };
 
@@ -65,8 +69,10 @@ export default function useInquirySection({
     if (!editText.trim()) return;
 
     try {
-      await commentAPI.updateComment(editingInquiry!, editText);
-      await refresh();
+      await updateCommentMutation.mutateAsync({
+        commentId: editingInquiry!,
+        content: editText,
+      });
       setEditingInquiry(null);
       setEditText("");
     } catch (error) {
@@ -76,8 +82,7 @@ export default function useInquirySection({
 
   const handleDeleteInquiry = async (commentId: number) => {
     try {
-      await commentAPI.deleteComment(commentId);
-      await refresh();
+      await deleteCommentMutation.mutateAsync(commentId);
       setShowDropdown(null);
     } catch (error) {
       console.error("문의 삭제 실패:", error);
@@ -108,7 +113,7 @@ export default function useInquirySection({
 
     inquiryText,
     setInquiryText,
-    inquiryLoading,
+    inquiryLoading: createCommentMutation.isPending,
 
     editingInquiry,
     editText,
