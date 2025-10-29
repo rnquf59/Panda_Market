@@ -5,6 +5,7 @@ import Button from "@/components/ui/Button";
 import { LoginFormData, loginSchema } from "@/schemas/authSchema";
 import { useStore } from "@/stores/useStore";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosError } from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -34,26 +35,34 @@ export default function LoginPage() {
     try {
       const response = await authAPI.login(data.email, data.password);
 
-      if (response.success) {
-        const { user, accessToken, refreshToken } = response.data;
+      const { user, accessToken, refreshToken } = response;
 
-        login(
-          {
-            id: user.id.toString(),
-            name: user.nickname,
-            email: user.email,
-          },
-          { accessToken, refreshToken }
-        );
+      login(
+        {
+          id: user.id.toString(),
+          name: user.nickname,
+          email: user.email,
+        },
+        { accessToken, refreshToken }
+      );
 
-        toast.success("로그인되었습니다!");
-        router.push("/");
-      } else {
-        toast.error("로그인에 실패했습니다");
-      }
+      toast.success("로그인되었습니다!");
+      router.push("/");
     } catch (error) {
       console.error("로그인 실패:", error);
-      toast.error("로그인 중 오류가 발생했습니다.");
+
+      let errorMessage = "로그인 중 오류가 발생했습니다.";
+
+      if (error instanceof AxiosError) {
+        errorMessage =
+          error.response?.data?.message ||
+          error.message ||
+          "로그인 중 오류가 발생했습니다.";
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      toast.error(errorMessage);
     }
   };
 
