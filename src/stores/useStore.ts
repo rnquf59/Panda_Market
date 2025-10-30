@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+import Cookies from "js-cookie";
 
 interface AppState {
   user: {
@@ -79,8 +80,11 @@ export const useStore = create<AppState>()(
 
       logout: () =>
         set(() => {
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
+          if (typeof window !== "undefined") {
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+          }
+          Cookies.remove("accessToken", { path: "/" });
 
           return {
             user: {
