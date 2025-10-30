@@ -4,7 +4,14 @@ export function middleware(request: NextRequest) {
   const { nextUrl } = request;
 
   const allowedPaths = ["/", "/auth/login", "/auth/signup"];
-  const isAllowedPath = allowedPaths.includes(nextUrl.pathname);
+  const isAllowedPath =
+    allowedPaths.includes(nextUrl.pathname) ||
+    nextUrl.pathname.startsWith("/_next") ||
+    nextUrl.pathname.startsWith("/favicon.ico") ||
+    nextUrl.pathname.startsWith("/logo") ||
+    nextUrl.pathname.startsWith("/icon") ||
+    nextUrl.pathname.startsWith("/image") ||
+    nextUrl.pathname.startsWith("/api");
 
   const authToken = request.headers.get("x-auth-token");
   const isLoggedIn = !!authToken;
@@ -13,13 +20,11 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/auth/login", nextUrl));
   }
 
-  if (nextUrl.pathname.startsWith("/auth") && isLoggedIn) {
-    return NextResponse.redirect(new URL("/", nextUrl));
-  }
-
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: [],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|logo|icon|image|api).*)",
+  ],
 };
