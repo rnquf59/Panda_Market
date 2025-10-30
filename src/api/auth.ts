@@ -1,6 +1,6 @@
-import { email } from "zod";
 import { SignupFormData } from "../schemas/authSchema";
 import { apiClient } from "./client";
+import Cookies from "js-cookie";
 
 export const authAPI = {
   signup: async (data: SignupFormData) => {
@@ -23,6 +23,14 @@ export const authAPI = {
         email,
         password,
       });
+      const { accessToken } = response.data;
+      if (accessToken) {
+        Cookies.set("accessToken", accessToken, {
+          path: "/",
+          sameSite: "lax",
+          secure: process.env.NODE_ENV === "production",
+        });
+      }
       return response.data;
     } catch (error) {
       throw error;
