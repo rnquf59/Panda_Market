@@ -15,6 +15,7 @@ export default function AddItemPage() {
     isLoading,
     error,
     imageLimitError,
+    fileInputRef,
     handleImageClick,
     handleImageChange,
     handleImageRemove,
@@ -39,6 +40,7 @@ export default function AddItemPage() {
         onImageChange={handleImageChange}
         onImageClick={handleImageClick}
         onImageRemove={handleImageRemove}
+        fileInputRef={fileInputRef}
       />
       <ProductFormField
         title="상품명"

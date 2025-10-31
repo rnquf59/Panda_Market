@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useRef } from "react";
+import React, { RefObject } from "react";
 
 interface ImageUploadProps {
   selectedImage: string | null;
@@ -7,6 +7,7 @@ interface ImageUploadProps {
   onImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onImageClick: () => void;
   onImageRemove: () => void;
+  fileInputRef: RefObject<HTMLInputElement | null>;
 }
 
 export default function ImageUpload({
@@ -15,14 +16,12 @@ export default function ImageUpload({
   onImageChange,
   onImageClick,
   onImageRemove,
+  fileInputRef,
 }: ImageUploadProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
   return (
     <div>
       <h2 className="text-2lg font-bold text-gray-800 mb-4">상품 이미지</h2>
       <div className="flex gap-6">
-        {/* 이미지 등록 영역 */}
         <div
           className="w-[168px] h-[168px] lg:w-[282px] lg:h-[282px] rounded-xl bg-gray-100 flex items-center justify-center cursor-pointer"
           onClick={onImageClick}
@@ -40,7 +39,6 @@ export default function ImageUpload({
           </div>
         </div>
 
-        {/* 등록된 이미지 미리보기 */}
         {selectedImage && (
           <div className="w-[168px] h-[168px] lg:w-[282px] lg:h-[282px] rounded-xl flex items-center justify-center relative">
             <Image
@@ -65,7 +63,6 @@ export default function ImageUpload({
         )}
       </div>
 
-      {/* 숨겨진 파일 입력 */}
       <input
         ref={fileInputRef}
         type="file"
@@ -74,7 +71,6 @@ export default function ImageUpload({
         className="hidden"
       />
 
-      {/* 이미지 등록 제한 에러 메시지 */}
       {imageLimitError && (
         <p className="text-lg font-regular text-error mt-4">
           {imageLimitError}

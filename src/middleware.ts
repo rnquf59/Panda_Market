@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
-  const { nextUrl } = request;
+  const { nextUrl, cookies } = request;
 
   const allowedPaths = ["/", "/auth/login", "/auth/signup"];
   const isAllowedPath =
@@ -13,7 +13,7 @@ export function middleware(request: NextRequest) {
     nextUrl.pathname.startsWith("/image") ||
     nextUrl.pathname.startsWith("/api");
 
-  const authToken = request.headers.get("x-auth-token");
+  const authToken = cookies.get("accessToken")?.value;
   const isLoggedIn = !!authToken;
 
   if (!isAllowedPath && !isLoggedIn) {

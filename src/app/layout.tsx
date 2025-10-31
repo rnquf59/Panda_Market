@@ -3,6 +3,7 @@ import "./globals.css";
 import ConditionalLayout from "@/components/layout/ConditionalLayout";
 import QueryProvider from "@/components/providers/QueryProvider";
 import ToastProvider from "@/components/providers/ToastProvider";
+import AuthHydrator from "@/components/providers/AuthHydrator";
 
 export const metadata: Metadata = {
   title: "판다마켓 - 믿을 수 있는 중고거래 플랫폼",
@@ -26,6 +27,7 @@ export default function RootLayout({
     <html lang="ko">
       <body className="antialiased">
         <QueryProvider>
+          <AuthHydrator />
           <ConditionalLayout>{children}</ConditionalLayout>
           <ToastProvider />
         </QueryProvider>
