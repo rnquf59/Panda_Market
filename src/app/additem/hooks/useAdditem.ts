@@ -4,6 +4,7 @@ import { productAPI } from "@/api/products";
 
 export function useAddItem() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     name: "",
@@ -26,10 +27,18 @@ export function useAddItem() {
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      const MAX_FILE_SIZE = 5 * 1024 * 1024;
+      if (file.size > MAX_FILE_SIZE) {
+        setImageLimitError("*이미지 파일 크기는 최대 5MB입니다.");
+        return;
+      }
+
+      setSelectedImageFile(file);
+      setImageLimitError(null);
+
       const reader = new FileReader();
       reader.onload = (e) => {
         setSelectedImage(e.target?.result as string);
-        setImageLimitError(null); // 이미지 등록 시 에러 메시지 제거
       };
       reader.readAsDataURL(file);
     }
@@ -37,6 +46,7 @@ export function useAddItem() {
 
   const handleImageRemove = () => {
     setSelectedImage(null);
+    setSelectedImageFile(null);
     setImageLimitError(null); // 이미지 제거 시 에러 메시지 제거
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -64,6 +74,11 @@ export function useAddItem() {
   const handleSubmit = async () => {
     if (!isFormValid()) {
       setError("모든 필드를 입력해주세요.");
+      return;
+    }
+
+    if (!selectedImageFile) {
+      setError("이미지를 등록해주세요.");
       return;
     }
 
