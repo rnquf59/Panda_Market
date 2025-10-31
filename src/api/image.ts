@@ -1,7 +1,7 @@
 import axios from "axios";
 import { apiClient } from "./client";
 
-export const imageAPI = {
+export const imagesAPI = {
   uploadImage: async (file: File): Promise<{ url: string }> => {
     try {
       const MAX_FILE_SIZE = 5 * 1024 * 1024;
