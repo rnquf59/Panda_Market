@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { CreateProductRequest } from "@/types/product";
 import { productAPI } from "@/api/products";
+import { imagesAPI } from "@/api/image";
 
 export function useAddItem() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -86,11 +87,14 @@ export function useAddItem() {
     setError(null);
 
     try {
+      const uploadeResponse = await imagesAPI.uploadImage(selectedImageFile);
+      const imageUrl = uploadeResponse.url;
+
       const productData: CreateProductRequest = {
         name: formData.name.trim(),
         description: formData.description.trim(),
         price: parseInt(formData.price.replace(/[^0-9]/g, "")),
-        images: [selectedImage!], // 이미지 URL로 변환 필요 (실제 구현에서는 파일 업로드 API 호출)
+        images: [imageUrl!],
         tags: tags.map((tag) => tag.replace("#", "")), // # 제거
       };
 
@@ -101,6 +105,7 @@ export function useAddItem() {
       setFormData({ name: "", description: "", price: "" });
       setTags([]);
       setSelectedImage(null);
+      setSelectedImageFile(null);
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
