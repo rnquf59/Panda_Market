@@ -2,8 +2,10 @@ import { useRef, useState } from "react";
 import { CreateProductRequest } from "@/types/product";
 import { productAPI } from "@/api/products";
 import { imagesAPI } from "@/api/images";
+import { useRouter } from "next/router";
 
 export function useAddItem() {
+  const router = useRouter();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
   const [tags, setTags] = useState<string[]>([]);
@@ -113,12 +115,8 @@ export function useAddItem() {
       const response = await productAPI.createProduct(productData);
       console.log("상품 등록 성공:", response);
 
-      setFormData({ name: "", description: "", price: "" });
-      setTags([]);
-      setSelectedImage(null);
-      setSelectedImageFile(null);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
+      if (response.id) {
+        router.push(`/items/${response.id}`);
       }
     } catch (err) {
       console.error("상품 등록 실패:", err);
