@@ -54,12 +54,24 @@ export function useAddItem() {
     }
   };
 
+  const formatPrice = (value: string): string => {
+    const numbers = value.replace(/[^0-9]/g, "");
+    if (!numbers) return "";
+
+    return numbers.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   const handleInputChange =
     (field: keyof typeof formData) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      let value = e.target.value;
+
+      if (field === "price") {
+        value = formatPrice(value);
+      }
       setFormData((prev) => ({
         ...prev,
-        [field]: e.target.value,
+        [field]: value,
       }));
     };
 
