@@ -81,8 +81,14 @@ export const productAPI = {
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
+        if (error.response?.status === 400) {
+          throw new Error("상품 등록 정보가 올바르지 않습니다.");
+        }
+        if (error.response?.status === 401) {
+          throw new Error("로그인이 필요합니다.");
+        }
         throw new Error(
-          `API Error: ${error.response?.status} ${error.message}`
+          `상품 등록 실패: ${error.response?.status} ${error.message}`
         );
       }
       throw new Error("알 수 없는 오류가 발생했습니다.");
