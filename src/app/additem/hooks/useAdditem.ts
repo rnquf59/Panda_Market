@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { CreateProductRequest } from "@/types/product";
 import { productAPI } from "@/api/products";
-import { imagesAPI } from "@/api/image";
+import { imagesAPI } from "@/api/images";
 
 export function useAddItem() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -48,7 +48,7 @@ export function useAddItem() {
   const handleImageRemove = () => {
     setSelectedImage(null);
     setSelectedImageFile(null);
-    setImageLimitError(null); // 이미지 제거 시 에러 메시지 제거
+    setImageLimitError(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -95,13 +95,12 @@ export function useAddItem() {
         description: formData.description.trim(),
         price: parseInt(formData.price.replace(/[^0-9]/g, "")),
         images: [imageUrl!],
-        tags: tags.map((tag) => tag.replace("#", "")), // # 제거
+        tags: tags.map((tag) => tag.replace("#", "")),
       };
 
       const response = await productAPI.createProduct(productData);
       console.log("상품 등록 성공:", response);
 
-      // 성공 시 폼 초기화 또는 페이지 이동
       setFormData({ name: "", description: "", price: "" });
       setTags([]);
       setSelectedImage(null);
@@ -120,7 +119,6 @@ export function useAddItem() {
   };
 
   return {
-    // 상태
     selectedImage,
     tags,
     formData,
@@ -129,7 +127,6 @@ export function useAddItem() {
     imageLimitError,
     fileInputRef,
 
-    // 핸들러
     handleImageClick,
     handleImageChange,
     handleImageRemove,
@@ -137,7 +134,6 @@ export function useAddItem() {
     handleSubmit,
     setTags,
 
-    // 유틸리티
     isFormValid: isFormValid(),
   };
 }
