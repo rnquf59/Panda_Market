@@ -5,6 +5,7 @@ import Textarea from "@/components/ui/Textarea";
 import Button from "@/components/ui/Button";
 import useInquirySection from "../hooks/useInquirySection";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Image from "next/image";
 
 interface InquirySectionProps {
   productId: number;
@@ -61,10 +62,23 @@ export default function InquirySection({ productId }: InquirySectionProps) {
         </div>
       </div>
 
-      <div className="flex flex-col gap-4 mb-10">
+      <div
+        className={`flex flex-col ${
+          comments.length > 0 ? "md:mb-4 xl:mb-6" : ""
+        }`}
+      >
         {comments.length === 0 && !loading ? (
-          <div className="text-center py-8 text-gray-500">
-            아직 등록된 문의가 없습니다.
+          <div className="flex flex-col items-center justify-center gap-2 mb-2">
+            <Image
+              src="/image/Img_inquiry_empty.png"
+              alt="문의없음"
+              width={196}
+              height={196}
+              className="w-[140px] xl:w-[196px] h-auth"
+            />
+            <p className="text-lg font-regular text-gray-400 text-center">
+              아직 문의가 없어요
+            </p>
           </div>
         ) : (
           <InfiniteScroll
