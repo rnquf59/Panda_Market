@@ -22,11 +22,7 @@ export function useCreateComment() {
     }) => commentAPI.createProductComment(productId, content),
     onSuccess: (_, { productId }) => {
       queryClient.invalidateQueries({
-        queryKey: commentKeys.lists(),
-        predicate: (query) => {
-          const params = query.queryKey[2] as CommentListParams;
-          return params?.productId === productId;
-        },
+        queryKey: ["comments", productId],
       });
     },
   });
@@ -45,7 +41,7 @@ export function useUpdateComment() {
     }) => commentAPI.updateComment(commentId, content),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: commentKeys.lists(),
+        queryKey: ["comments"],
       });
     },
   });
@@ -58,7 +54,7 @@ export function useDeleteComment() {
     mutationFn: (commentId: number) => commentAPI.deleteComment(commentId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: commentKeys.lists(),
+        queryKey: ["comments"],
       });
     },
   });
