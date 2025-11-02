@@ -1,6 +1,7 @@
 import Button from "@/components/ui/Button";
 import Dropdown from "@/components/ui/Dropdown";
 import Textarea from "@/components/ui/Textarea";
+import { useStore } from "@/stores/useStore";
 import { Comment } from "@/types/product";
 import Image from "next/image";
 
@@ -29,8 +30,11 @@ export default function InquiryItem({
   onDelete,
   onDropdownToggle,
 }: InquiryItemProps) {
+  const { user } = useStore();
   const isEditing = editingInquiry === comment.id;
   const isDropdownOpen = showDropdown === comment.id;
+  const isMyComment = user.id && Number(user.id) === comment.writer.id;
+
   return (
     <div className="border-b border-gray-200 mb-3">
       {isEditing ? (
@@ -119,60 +123,62 @@ export default function InquiryItem({
             </div>
           </div>
 
-          <div className="relative">
-            <Image
-              src="/icon/ic_kebab.svg"
-              alt="메뉴"
-              width={24}
-              height={24}
-              className="w-6 h-6 flex-shrink-0 cursor-pointer"
-              onClick={(e) => {
-                e.stopPropagation();
-                onDropdownToggle(comment.id);
-              }}
-            />
-            {isDropdownOpen && (
-              <div
-                className="absolute top-10 right-0 z-50 dropdown-container"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Dropdown
-                  variant="medium"
-                  className="xl:hidden"
-                  onClick={() => {
-                    onEditStart(comment.id, comment.content);
-                  }}
+          {isMyComment && (
+            <div className="relative">
+              <Image
+                src="/icon/ic_kebab.svg"
+                alt="메뉴"
+                width={24}
+                height={24}
+                className="w-6 h-6 flex-shrink-0 cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDropdownToggle(comment.id);
+                }}
+              />
+              {isDropdownOpen && (
+                <div
+                  className="absolute top-10 right-0 z-50 dropdown-container"
+                  onClick={(e) => e.stopPropagation()}
                 >
-                  <span>수정</span>
-                  <span
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDelete(comment.id);
+                  <Dropdown
+                    variant="medium"
+                    className="xl:hidden"
+                    onClick={() => {
+                      onEditStart(comment.id, comment.content);
                     }}
                   >
-                    삭제
-                  </span>
-                </Dropdown>
-                <Dropdown
-                  variant="large"
-                  className="hidden xl:block"
-                  onClick={() => {
-                    onEditStart(comment.id, comment.content);
-                  }}
-                >
-                  <span>수정</span>
-                  <span
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDelete(comment.id);
+                    <span>수정</span>
+                    <span
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDelete(comment.id);
+                      }}
+                    >
+                      삭제
+                    </span>
+                  </Dropdown>
+                  <Dropdown
+                    variant="large"
+                    className="hidden xl:block"
+                    onClick={() => {
+                      onEditStart(comment.id, comment.content);
                     }}
                   >
-                    삭제
-                  </span>
-                </Dropdown>
-              </div>
-            )}
-          </div>
+                    <span>수정</span>
+                    <span
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDelete(comment.id);
+                      }}
+                    >
+                      삭제
+                    </span>
+                  </Dropdown>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>
