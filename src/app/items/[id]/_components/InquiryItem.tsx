@@ -33,7 +33,9 @@ export default function InquiryItem({
   const { user } = useStore();
   const isEditing = editingInquiry === comment.id;
   const isDropdownOpen = showDropdown === comment.id;
-  const isMyComment = user.id && Number(user.id) === comment.writer.id;
+  const userId = user.id ? Number(user.id) : null;
+  const isMyComment =
+    user.isLoggedIn && userId !== null && userId === comment.writer.id;
 
   return (
     <div className="border-b border-gray-200 mb-3">
