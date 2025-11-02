@@ -66,9 +66,6 @@ export const useStore = create<AppState>()(
 
       login: (userData, tokens) =>
         set(() => {
-          localStorage.setItem("accessToken", tokens.accessToken);
-          localStorage.setItem("refreshToken", tokens.refreshToken);
-
           return {
             user: {
               ...userData,
@@ -80,10 +77,6 @@ export const useStore = create<AppState>()(
 
       logout: () =>
         set(() => {
-          if (typeof window !== "undefined") {
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
-          }
           Cookies.remove("accessToken", { path: "/" });
 
           return {
