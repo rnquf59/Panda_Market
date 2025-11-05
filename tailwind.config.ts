@@ -41,6 +41,7 @@ const config: Config = {
         xs: ["12px", { lineHeight: "20px" }],
       },
       fontWeight: {
+        extrabold: "800",
         bold: "700",
         semibold: "600",
         medium: "500",
