@@ -32,8 +32,8 @@ export default function BestPostSection({
 
   const displayedPosts = bestPosts.slice(0, displayCount);
   return (
-    <section className="flex flex-col mb-4">
-      <h2 className="text-2lg font-extrabold text-gray-800 mb-4">
+    <section className="flex flex-col mb-6 lg:mb-10">
+      <h2 className="text-2lg font-extrabold text-gray-800 mb-4 md:mb-6">
         베스트 게시글
       </h2>
 

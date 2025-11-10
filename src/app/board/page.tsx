@@ -1,25 +1,21 @@
-import { BestArticle } from "@/types/article";
 import BestPostSection from "./_components/BestPostSection";
+import { useBestArticles } from "@/hooks/useArticles";
 
 export default function BoardPage() {
-  const bestPosts: BestArticle[] = [
-    {
-      id: 1,
-      title: "맥북 16인치 16기가 1테라 정도 사양이면 얼마에 팔아야하나요?",
-      content: "게시글 내용입니다.",
-      image: "/image/img_empty.png",
-      writer: {
-        id: 1,
-        nickname: "사용자1",
-      },
-      likeCount: 12,
-      createdAt: "2024-04-16T00:00:00.000Z",
-      updatedAt: "2024-04-16T00:00:00.000Z",
-    },
-  ];
+  const { data: BestArticleResponse, isLoading, error } = useBestArticles(3);
+  const bestPosts = BestArticleResponse?.list || [];
+  const errorMessage = error
+    ? error instanceof Error
+      ? error.message
+      : "베스트 게시글을 불러오는데 실패했습니다."
+    : null;
   return (
     <>
-      <BestPostSection bestPosts={bestPosts} />
+      <BestPostSection
+        bestPosts={bestPosts}
+        isLoading={isLoading}
+        error={errorMessage}
+      />
     </>
   );
 }
