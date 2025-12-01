@@ -1,5 +1,6 @@
 import BestPostSection from "./_components/BestPostSection";
 import { useBestArticles } from "@/hooks/useArticles";
+import BoardPostSection from "./_components/BoardPostSection";
 
 export default function BoardPage() {
   const { data: BestArticleResponse, isLoading, error } = useBestArticles(3);
@@ -16,6 +17,7 @@ export default function BoardPage() {
         isLoading={isLoading}
         error={errorMessage}
       />
+      <BoardPostSection />
     </>
   );
 }
